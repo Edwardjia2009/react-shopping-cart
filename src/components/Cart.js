@@ -2,6 +2,32 @@ import React, { Component } from 'react'
 import formatCurrency from '../utils'
 
 export class Cart extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      name: "",
+      email: "",
+      address: "",
+      showCheckout: false
+    }
+  }
+
+  handleInput = event => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  creatOrder = event => {
+    event.preventDefault()
+    const order = {
+      name: "",
+      email: "",
+      address: "",
+      cartItems: this.props.cartItems
+    }
+    this.props.createOrder(order)
+  }
+
   render() {
     const { cartItems } = this.props
     return (
@@ -35,9 +61,32 @@ export class Cart extends Component {
                 {formatCurrency(cartItems.reduce((a, c) => a + c.price * c.count, 0))}
               </div>
               <div>
-                <button className="button primary">Proceed</button>
+                <button onClick={() => this.setState({ showCheckout: true })} className="button primary">Proceed</button>
               </div>
             </div>
+            {this.state.showCheckout && (
+              <div className="cart">
+                <form onSubmit={this.creatOrder}>
+                  <ul className="form-container">
+                    <li>
+                      <label>Email</label>
+                      <input type="email" name="email" required onChange={this.handleInput} />
+                    </li>
+                    <li>
+                      <label>Name</label>
+                      <input type="text" name="name" required onChange={this.handleInput} />
+                    </li>
+                    <li>
+                      <label>Address</label>
+                      <input type="text" name="address" required onChange={this.handleInput} />
+                    </li>
+                    <li>
+                      <button className="button primary" type="submit">Checkout</button>
+                    </li>
+                  </ul>
+                </form>
+              </div>
+            )}
           </div>}
       </div>
     )
