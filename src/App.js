@@ -71,6 +71,10 @@ export class App extends Component {
     })
   }
 
+  createOrder = order => {
+    alert("aaa")
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.cartItems !== this.state.cartItems) { localStorage.setItem("cartItems", JSON.stringify(this.state.cartItems)) }
   }
@@ -94,7 +98,11 @@ export class App extends Component {
               <Products products={this.state.products} addToCart={this.addToCart} />
             </div>
             <div className="sidebar">
-              <Cart cartItems={this.state.cartItems} removeFromCart={this.removeFromCart} />
+              <Cart
+                cartItems={this.state.cartItems}
+                removeFromCart={this.removeFromCart}
+                createOrder={this.createOrder}
+              />
             </div>
           </div>
         </main>
