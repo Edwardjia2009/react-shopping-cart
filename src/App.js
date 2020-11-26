@@ -11,7 +11,7 @@ export class App extends Component {
 
     this.state = {
       products: data.products,
-      cartItems: [],
+      cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
       size: "",
       sort: ""
     }
@@ -69,6 +69,10 @@ export class App extends Component {
     this.setState({
       cartItems: cartItems.filter(item => item._id !== product._id)
     })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.cartItems !== this.state.cartItems) { localStorage.setItem("cartItems", JSON.stringify(this.state.cartItems)) }
   }
 
   render() {
